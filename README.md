@@ -1,0 +1,1 @@
+# awstack-training-serverless
