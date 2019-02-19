@@ -1,0 +1,47 @@
+{
+    "resource": "/upload",
+    "path": "/upload",
+    "httpMethod": "GET",
+    "headers": "None",
+    "multiValueHeaders": "None",
+    "queryStringParameters": {
+        "filename": "image-test.jpg"
+    },
+    "multiValueQueryStringParameters": {
+        "filename": [
+            "image-test.jpg"
+        ]
+    },
+    "pathParameters": "None",
+    "stageVariables": "None",
+    "requestContext": {
+        "path": "/upload",
+        "accountId": "xxxxxxxxxxxxxxx",
+        "resourceId": "4wl745",
+        "stage": "test-invoke-stage",
+        "domainPrefix": "testPrefix",
+        "requestId": "3a0f0cd5-2d71-11e9-8d42-6dd893bfef55",
+        "identity": {
+            "cognitoIdentityPoolId": "None",
+            "cognitoIdentityId": "None",
+            "apiKey": "test-invoke-api-key",
+            "cognitoAuthenticationType": "None",
+            "userArn": "arn:aws:iam::xxxxxxxxxxxxxxx:root",
+            "apiKeyId": "test-invoke-api-key-id",
+            "userAgent": "aws-internal/3 aws-sdk-java/1.11.481 Linux/4.9.137-0.1.ac.218.74.329.metal1.x86_64 OpenJDK_64-Bit_Server_VM/25.192-b12 java/1.8.0_192",
+            "accountId": "xxxxxxxxxxxxxxx",
+            "caller": "xxxxxxxxxxxxxxx",
+            "sourceIp": "test-invoke-source-ip",
+            "accessKey": "ASIAS73MWGZGIK5724XS",
+            "cognitoAuthenticationProvider": "None",
+            "user": "xxxxxxxxxxxxxxx"
+        },
+        "domainName": "testPrefix.testDomainName",
+        "resourcePath": "/upload",
+        "httpMethod": "GET",
+        "extendedRequestId": "U5oYkESeoAMFQsQ=",
+        "apiId": "b46qfj0h8e"
+    },
+    "body": "None",
+    "isBase64Encoded": false
+}

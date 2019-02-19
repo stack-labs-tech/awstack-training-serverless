@@ -1,0 +1,9 @@
+{
+  "api": {
+    "preSignedEndpoint": "https://b46qfj0h8e.execute-api.us-east-1.amazonaws.com/dev/upload",
+    "resultEndpoint": "https://b46qfj0h8e.execute-api.us-east-1.amazonaws.com/dev/results"
+  },
+  "bucket": {
+    "thumbnail": "https://s3.amazonaws.com/serverless-training-thumb"
+  }
+}

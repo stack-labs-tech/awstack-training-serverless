@@ -1,0 +1,22 @@
+{
+    "Records": [
+      {
+        "EventSource": "aws:sns",
+        "EventVersion": "1.0",
+        "EventSubscriptionArn": "arn:aws:sns:us-east-1::serverless-reco-results:xxxxxxxxxx",
+        "Sns": {
+          "Type": "Notification",
+          "MessageId": "xxxxxxxxxx",
+          "TopicArn": "arn:aws:sns:us-east-1::serverless-reco-results",
+          "Subject": "None",
+          "Message": "{'status': 'ok', 'name': 'golden-retriever-puppy.jpg','result': 'Brittany_spaniel','confidence': 0.5541537404060364}",
+          "Timestamp": "2019-01-25T11:55:49.972Z",
+          "SignatureVersion": "1",
+          "Signature": "xxxxxxxxxxxxxxxxxxxxx",
+          "SigningCertUrl": "https://sns.us-east-1.amazonaws.com/SimpleNotificationService-xxxxxxxxxx.pem",
+          "UnsubscribeUrl": "https://sns.us-east-1.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:us-east-1::serverless-reco-results:xxxxxxxxxx",
+          "MessageAttributes": {}
+        }
+      }
+    ]
+  }

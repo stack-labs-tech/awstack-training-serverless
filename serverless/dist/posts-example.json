@@ -1,0 +1,14 @@
+{
+  "posts": [
+    {
+      "id": 0,
+      "team": "Squid",
+      "content": "My first post"
+    },
+    {
+      "id": 1,
+      "team": "Squid",
+      "content": "Hey, already the second one !"
+    }
+  ]
+}
