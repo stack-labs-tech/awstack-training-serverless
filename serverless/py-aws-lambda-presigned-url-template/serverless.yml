@@ -28,9 +28,20 @@ provider:
   stage: dev
   region: eu-west-1
 
-# you can overwrite defaults here
-#  stage: dev
-#  region: us-east-1
+  # WARNING: this is a very permissive policy
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "logs:CreateLogGroup"
+        - "logs:CreateLogStream"
+        - "logs:PutLogEvents"
+        - "lambda:GetLayerVersion"
+        - "lambda:GetLayerVersionPolicy"
+        - "s3:*"
+        - "sns:*"
+        - "dynamodb:*"
+      Resource: "*"
+
 
 # you can add statements to the Lambda function's IAM Role here
 #  iamRoleStatements:
@@ -71,41 +82,40 @@ functions:
           cors: true
           # authorizer: aws_iam
 
-#    The following are a few example events you can configure
-#    NOTE: Please make sure to change your handler code to work with those events
-#    Check the event documentation for details
-#    events:
-#      - http:
-#          path: users/create
-#          method: get
-#      - s3: ${env:BUCKET}
-#      - schedule: rate(10 minutes)
-#      - sns: greeter-topic
-#      - stream: arn:aws:dynamodb:region:XXXXXX:table/foo/stream/1970-01-01T00:00:00.000
-#      - alexaSkill: amzn1.ask.skill.xx-xx-xx-xx
-#      - alexaSmartHome: amzn1.ask.skill.xx-xx-xx-xx
-#      - iot:
-#          sql: "SELECT * FROM 'some_topic'"
-#      - cloudwatchEvent:
-#          event:
-#            source:
-#              - "aws.ec2"
-#            detail-type:
-#              - "EC2 Instance State-change Notification"
-#            detail:
-#              state:
-#                - pending
-#      - cloudwatchLog: '/aws/lambda/hello'
-#      - cognitoUserPool:
-#          pool: MyUserPool
-#          trigger: PreSignUp
+    #    The following are a few example events you can configure
+    #    NOTE: Please make sure to change your handler code to work with those events
+    #    Check the event documentation for details
+    #    events:
+    #      - http:
+    #          path: users/create
+    #          method: get
+    #      - s3: ${env:BUCKET}
+    #      - schedule: rate(10 minutes)
+    #      - sns: greeter-topic
+    #      - stream: arn:aws:dynamodb:region:XXXXXX:table/foo/stream/1970-01-01T00:00:00.000
+    #      - alexaSkill: amzn1.ask.skill.xx-xx-xx-xx
+    #      - alexaSmartHome: amzn1.ask.skill.xx-xx-xx-xx
+    #      - iot:
+    #          sql: "SELECT * FROM 'some_topic'"
+    #      - cloudwatchEvent:
+    #          event:
+    #            source:
+    #              - "aws.ec2"
+    #            detail-type:
+    #              - "EC2 Instance State-change Notification"
+    #            detail:
+    #              state:
+    #                - pending
+    #      - cloudwatchLog: '/aws/lambda/hello'
+    #      - cognitoUserPool:
+    #          pool: MyUserPool
+    #          trigger: PreSignUp
 
-#    Define function environment variables here
+    #    Define function environment variables here
     environment:
-      bucketName: 
-        'Fn::ImportValue': ${self:custom.stage}-UploadBucket
+      bucketName:
+        "Fn::ImportValue": ${self:custom.stage}-UploadBucket
         # dummybucket
-
 # you can add CloudFormation resource templates here
 #resources:
 #  Resources:
@@ -118,10 +128,8 @@ functions:
 #       Description: "Description for the output"
 #       Value: "Some output value"
 
-
-  
 #resources:
-  # # DynamoDB
-  # - ${file(../resources/dynamodb-table.yml)}
-  # S3
-  #- ${file(../uploads/serverless.yml)}
+# # DynamoDB
+# - ${file(../resources/dynamodb-table.yml)}
+# S3
+#- ${file(../uploads/serverless.yml)}
