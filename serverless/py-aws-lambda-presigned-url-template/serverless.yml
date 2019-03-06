@@ -64,6 +64,12 @@ provider:
 functions:
   py-aws-lambda-presigned-url:
     handler: lambda_function.py
+    events:
+      - http:
+          path: upload
+          method: get
+          cors: true
+          authorizer: aws_iam
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
