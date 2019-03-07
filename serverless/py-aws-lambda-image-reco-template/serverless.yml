@@ -1,0 +1,60 @@
+service: py-aws-lambda-image-reco # NOTE: update this with your service name
+
+plugins:
+  - serverless-plugin-existing-s3
+
+custom:
+  # Our stage is based on what is passed in when running serverless
+  # commands. Or fallsback to what we have set in the provider section.
+  stage: ${opt:stage, self:provider.stage}
+
+provider:
+  name: aws
+  runtime: python3.7
+  stage: dev
+  region: eu-west-1
+  memorySize: 512
+  timeout: 10
+
+  # WARNING: this is a very permissive policy
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "logs:CreateLogGroup"
+        - "logs:CreateLogStream"
+        - "logs:PutLogEvents"
+        - "lambda:GetLayerVersion"
+        - "lambda:GetLayerVersionPolicy"
+        - "s3:*"
+        - "sns:*"
+        - "dynamodb:*"
+      Resource: "*"
+    # Allow serverless-plugin-existing-s3 to add event to our pre existing upload bucket
+    - Effect: "Allow"
+      Action:
+        - "s3:GetBucketNotification"
+        - "s3:PutBucketNotification"
+      Resource:
+        "Fn::ImportValue": ${self:custom.stage}-UploadBucketArn
+
+functions:
+  py-aws-lambda-image-reco:
+    handler: lambda_function.lambda_handler
+    layers:
+      # Tensorflow-Kera-Pillow layer
+      #   original layer from the tutorial (us-east-1)
+      #   - arn:aws:lambda:us-east-1:347034527139:layer:tf_keras_pillow:3
+      #   adapted to eu-west-1 (courtesy of https://github.com/antonpaquin/Tensorflow-Lambda-Layer)
+      - arn:aws:lambda:eu-west-1:347034527139:layer:tf_keras_pillow:1
+    events:
+      # Cannot declare event on pre-existing bucket (without asking for it's reacreation)
+      # We use serverless-plugin-existing-s3 for this purpose.
+      # It is a 2 step process:
+      #   - sls deploy (will create all but the event)
+      #   - sls s3deploy (will add the event defined below)
+      - existingS3:
+          bucket:
+            awstacktraining-uploads-dev-s3bucketuploads-g0u70ylv7f72
+            #Fn::ImportValue: ${self:custom.stage}-UploadBucketName
+          events:
+            - s3:ObjectCreated:*

@@ -13,18 +13,19 @@ provider:
 
 resources:
   Resources:
-    S3Bucket:
+    # Naming convention (S3Bucket<resource-name> seems important to be alloweed to configure event later)
+    # See https://github.com/serverless/serverless/issues/4194#issuecomment-455568672
+    S3BucketUploads:
       Type: AWS::S3::Bucket
       Properties:
-        # BucketName: ${self:custom.stage}-uploadbucketestodm
+        BucketName: ${self:custom.stage}-upload-bucket-longname
         # Set the CORS policy
         CorsConfiguration:
           CorsRules:
-            -
-              AllowedOrigins:
-                - '*'
+            - AllowedOrigins:
+                - "*"
               AllowedHeaders:
-                - '*'
+                - "*"
               AllowedMethods:
                 - POST
               MaxAge: 3000
@@ -33,14 +34,14 @@ resources:
   Outputs:
     UploadBucketArn:
       Value:
-         Fn::GetAtt:
-          - S3Bucket
+        Fn::GetAtt:
+          - S3BucketUploads
           - Arn
       Export:
         Name: ${self:custom.stage}-UploadBucketArn
 
     UploadBucketName:
       Value:
-        Ref: S3Bucket
+        Ref: S3BucketUploads
       Export:
-        Name: ${self:custom.stage}-UploadBucket
+        Name: ${self:custom.stage}-UploadBucketName

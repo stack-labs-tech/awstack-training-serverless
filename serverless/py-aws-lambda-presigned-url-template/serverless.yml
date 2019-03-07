@@ -42,7 +42,6 @@ provider:
         - "dynamodb:*"
       Resource: "*"
 
-
 # you can add statements to the Lambda function's IAM Role here
 #  iamRoleStatements:
 #    - Effect: "Allow"
@@ -114,7 +113,7 @@ functions:
     #    Define function environment variables here
     environment:
       bucketName:
-        "Fn::ImportValue": ${self:custom.stage}-UploadBucket
+        "Fn::ImportValue": ${self:custom.stage}-UploadBucketName
         # dummybucket
 # you can add CloudFormation resource templates here
 #resources:
