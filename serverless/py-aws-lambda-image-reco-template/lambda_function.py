@@ -35,14 +35,14 @@ def lambda_handler(event, context):
         
         result = { "status": "ok", "name": file_key, "result": str(prediction[1]), "confidence": float(prediction[2]) }
         
-        # snsTopicArn = os.environ["snsTopicArn"]
-        # response = sns.publish(
-        #         TargetArn=snsTopicArn,
-        #         Message=json.dumps({'default': json.dumps(result)}),
-        #         MessageStructure='json'
-        #     )
+        snsTopicArn = os.environ["snsTopicArn"]
+        response = sns.publish(
+                TargetArn=snsTopicArn,
+                Message=json.dumps({'default': json.dumps(result)}),
+                MessageStructure='json'
+            )
         
-        # print(response)
+        print(response)
     except Exception as e:
         print(e)
         raise e
