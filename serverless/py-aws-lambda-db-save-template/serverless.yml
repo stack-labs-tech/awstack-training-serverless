@@ -1,0 +1,60 @@
+service: py-aws-lambda-db-save # NOTE: update this with your service name
+
+custom:
+  # Our stage is based on what is passed in when running serverless
+  # commands. Or fallsback to what we have set in the provider section.
+  stage: ${opt:stage, self:provider.stage}
+  tableName: ${self:service}-${self:custom.stage}-imageRecoResults
+  tableThroughputs:
+    prod: 5
+    default: 1
+  tableThroughput: ${self:custom.tableThroughputs.${self:custom.stage}, self:custom.tableThroughputs.default}
+  # snsTopicName: { "Fn::ImportValue": {"${self:custom.stage}-SNSTopicName"} }
+  snsTopicName: py-aws-lambda-image-reco-${self:custom.stage}-serverless-reco-results
+  snsTopicArn: "arn:aws:sns:eu-west-1:814098365754:py-aws-lambda-image-reco-dev-serverless-reco-results"
+
+provider:
+  name: aws
+  runtime: python3.6
+  stage: dev
+  region: eu-west-1
+
+  # WARNING: this is a very permissive policy
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "logs:CreateLogGroup"
+        - "logs:CreateLogStream"
+        - "logs:PutLogEvents"
+        - "lambda:GetLayerVersion"
+        - "lambda:GetLayerVersionPolicy"
+        - "s3:*"
+        - "sns:*"
+        - "dynamodb:*"
+      Resource: "*"
+
+functions:
+  py-aws-lambda-db-save:
+    handler: lambda_function.lambda_handler
+    events:
+#      - sns: ${self:custom.snsTopicName}
+      - sns: arn:aws:sns:eu-west-1:814098365754:py-aws-lambda-image-reco-dev-serverless-reco-results
+    environment:
+      dynamodbTableName: ${self:custom.tableName}
+
+resources:
+  Resources:
+    ImageRecoResults:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.tableName}
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        # Set the capacity based on the stage
+        ProvisionedThroughput:
+          ReadCapacityUnits: ${self:custom.tableThroughput}
+          WriteCapacityUnits: ${self:custom.tableThroughput}
