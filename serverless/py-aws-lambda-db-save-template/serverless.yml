@@ -9,9 +9,8 @@ custom:
     prod: 5
     default: 1
   tableThroughput: ${self:custom.tableThroughputs.${self:custom.stage}, self:custom.tableThroughputs.default}
-  # snsTopicName: { "Fn::ImportValue": {"${self:custom.stage}-SNSTopicName"} }
-  snsTopicName: py-aws-lambda-image-reco-${self:custom.stage}-serverless-reco-results
-  snsTopicArn: "arn:aws:sns:eu-west-1:814098365754:py-aws-lambda-image-reco-dev-serverless-reco-results"
+  snsTopicArn:
+    Fn::ImportValue: '${self:custom.stage}-RecoDoneSNSTopicArn'
 
 provider:
   name: aws
@@ -37,8 +36,10 @@ functions:
   py-aws-lambda-db-save:
     handler: lambda_function.lambda_handler
     events:
-#      - sns: ${self:custom.snsTopicName}
-      - sns: arn:aws:sns:eu-west-1:814098365754:py-aws-lambda-image-reco-dev-serverless-reco-results
+      - sns:
+          arn: ${self:custom.snsTopicArn}
+          topicName: 'TopicNameThatDoesntmatter'
+          # the arbitrary topic name seems mandatory.
     environment:
       dynamodbTableName: ${self:custom.tableName}
 
