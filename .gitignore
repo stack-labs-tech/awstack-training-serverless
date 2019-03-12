@@ -1,2 +1,2 @@
 .serverless/
-serverless/py-aws-lambda-image-reco-template/node_modules/serverless-plugin-existing-s3/
+multiple-services/py-aws-lambda-image-reco-template/node_modules/serverless-plugin-existing-s3/
