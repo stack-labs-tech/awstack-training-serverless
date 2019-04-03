@@ -1,0 +1,41 @@
+service: py-aws-lambda-db-list-items # NOTE: update this with your service name
+
+custom:
+  stage: ${opt:stage, self:provider.stage}
+  tableName: 
+    "Fn::ImportValue": '${self:custom.stage}-ImageRecoResultsTable'
+
+provider:
+  name: aws
+  # Python 3.6 (not 3.7) required for ML model execution
+  runtime: python3.6
+  stage: dev
+  region: eu-west-1
+  memorySize: 512
+  timeout: 10
+
+  # WARNING: this is a very permissive policy
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "logs:CreateLogGroup"
+        - "logs:CreateLogStream"
+        - "logs:PutLogEvents"
+        - "lambda:GetLayerVersion"
+        - "lambda:GetLayerVersionPolicy"
+        - "s3:*"
+        - "sns:*"
+        - "dynamodb:*"
+      Resource: "*"
+
+functions:
+  py-aws-lambda-db-list-items:
+    handler: lambda_function.lambda_handler
+    events:
+      - http:
+          path: results
+          method: get
+          cors: true
+    
+    environment:
+      dynamodbTableName: ${self:custom.tableName}

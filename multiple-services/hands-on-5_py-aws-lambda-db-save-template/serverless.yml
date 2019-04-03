@@ -59,3 +59,19 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: ${self:custom.tableThroughput}
           WriteCapacityUnits: ${self:custom.tableThroughput}
+
+  # Print out the name of the bucket that is created
+  Outputs:
+    ImageRecoResultsTable:
+      Value:
+        Ref: ImageRecoResults
+      Export:
+        Name: ${self:custom.stage}-ImageRecoResultsTable
+    ImageRecoResultsTableArn:
+      Value:
+        Fn::GetAtt:
+          - ImageRecoResults
+          - Arn
+      Export:
+        Name: ${self:custom.stage}-ImageRecoResultsTableArn
+
