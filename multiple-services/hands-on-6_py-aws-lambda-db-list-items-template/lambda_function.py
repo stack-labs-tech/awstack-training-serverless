@@ -18,7 +18,7 @@ def lambda_handler(event, context):
 
         result = table.scan()
                 
-        print('{} items found !'.format(result['Count']))
+        print('{} items  found !'.format(result['Count']))
         
         print(result['Items'])
         return {
