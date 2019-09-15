@@ -1,12 +1,29 @@
 # AWStack Training Serverless - Découverte d'AWS par la pratique
 
-Découvrez les **avantages de l'architecture serverless** pour :
+This repository contains a demo AWS serverless application (using AWS lambada and other services).
 
-- développer des applications rapidement
-- se focaliser sur le développement et non le déploiement
-- améliorer la productivité et l'agilité de l'équipe
-- optimiser le coût et les performances
+It was inscpired by the demo app build during the training session organized by stack labs early 2019.
 
-Ainsi, vous testerez **les services fourni par AWS au travers d’exemples et d'ateliers (Hands-on)**.
+> Découvrez les **avantages de l'architecture serverless** pour :
+>
+>- développer des applications rapidement
+>- se focaliser sur le développement et non le déploiement
+>- améliorer la productivité et l'agilité de l'équipe
+>- optimiser le coût et les performances
+>Ainsi, vous testerez **les services fourni par AWS au travers d’exemples et d'ateliers (Hands-on)**.
+>
+>**Les techno abordés** : #AWS S3 #API Gateway #Lambda #DynamoDB #Step Functions #X-Ray #SNS
 
-**Les techno abordés** : #AWS S3 #API Gateway #Lambda #DynamoDB #Step Functions #X-Ray #SNS
+## The demo application
+
+This applicaiton allows a user to trigger image recognition and automatic thunbnail generation when an image is uploaded to an S3 bucket.
+
+## Usage
+
+Install serveless framework
+
+This application is made out of several services that depend on each other. You have to deploy the services in the right order to avoid errors related to theses dependencies.
+
+## Organization
+
+S
