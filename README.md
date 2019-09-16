@@ -24,6 +24,21 @@ Install serveless framework
 
 This application is made out of several services that depend on each other. You have to deploy the services in the right order to avoid errors related to theses dependencies.
 
+```bash
+# reference your own profile (perso-adminolive here as declared in ~/.aws/credentials)
+
+# Deploy first service
+cd multiple-services/hands-on-1_uploads
+serverless deploy -v --aws-profile perso-adminolive
+
+# Deploy second service
+cd multiple-services/hands-on-2_py-aws-lambda-presigned-url-template
+serverless deploy -v --aws-profile perso-adminolive
+
+# 3rd service....
+
+```
+
 ## Organization
 
-S
+
