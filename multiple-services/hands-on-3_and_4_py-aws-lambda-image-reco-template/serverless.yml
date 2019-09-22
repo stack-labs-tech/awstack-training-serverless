@@ -1,7 +1,4 @@
-service: py-aws-lambda-image-reco # NOTE: update this with your service name
-
-plugins:
-  - serverless-plugin-existing-s3
+service: awstacktraining-reco 
 
 custom:
   stage: ${opt:stage, self:provider.stage}
@@ -42,44 +39,23 @@ provider:
         - "sns:*"
         - "dynamodb:*"
       Resource: "*"
-    # Allow serverless-plugin-existing-s3 to add event to our pre existing upload bucket
-    # - Effect: "Allow"
-    #   Action:
-    #     - "s3:GetBucketNotification"
-    #     - "s3:PutBucketNotification"
-    #   Resource:
-    #     Fn::ImportValue: dev-UploadBucketArn
 
 functions:
   py-aws-lambda-image-reco:
     handler: lambda_function.lambda_handler
     layers:
       # Tensorflow-Kera-Pillow layer
-      #   original layer from the tutorial (us-east-1)
-      #   - arn:aws:lambda:us-east-1:347034527139:layer:tf_keras_pillow:3
+      #   original layer from the tutorial (us-east-1) with arn:aws:lambda:us-east-1:347034527139:layer:tf_keras_pillow:3
       #   adapted to eu-west-1 (courtesy of https://github.com/antonpaquin/Tensorflow-Lambda-Layer)
       - arn:aws:lambda:eu-west-1:347034527139:layer:tf_keras_pillow:1
     events:
-      # Cannot declare event on pre-existing bucket (without asking for it's recreation)
-      # the following does not work !
-      # - s3:
-      #   bucket: awstacktraining-uploads-dev-s3bucketuploads-g0u70ylv7f72
-      #   #bucket: 
-      #   #  "Fn::ImportValue": ${self:custom.stage}-UploadBucketName
-      #   events:
-      #     - s3:ObjectCreated:*
-      
-      # We instead use serverless-plugin-existing-s3 for this purpose.
-      # It is a 2 step process:
-      #   - sls deploy (will create all but the event)
-      #   - sls s3deploy (will add the event defined below)
-      - existingS3:
-          bucket:
-            # TODO: find a way to remove this static name.
-            awstacktraining-uploads-dev-s3bucketuploads-g0u70ylv7f72
-            #Fn::ImportValue: dev-UploadBucketArn
-            #Fn::ImportValue: dev-UploadBucketName
-            #'Fn::ImportValue': '${self:custom.stage}-UploadBucketName'
+      - s3:
+          # bucket: dev-uploads-bucket-longname
+          bucket: 
+            Fn::ImportValue: '${self:custom.stage}-UploadBucketName'
+          event: s3:ObjectCreated:*
+          # Thanks to https://github.com/serverless/serverless/pull/6290 we can now address existing bucket natively
+          existing: true
           events:
             - s3:ObjectCreated:*
     environment:
@@ -102,7 +78,7 @@ resources:
       Export:
         Name: ${self:custom.stage}-RecoDoneSNSTopicName
     RecoDoneSNSTopicArn:
-      Description: The ARN of the SNS topic to notify when picture is treated
+      Description: ARN of the SNS topic to notify when picture is treated
       Value: ${self:custom.snsTopicArn}
       Export:
         Name: ${self:custom.stage}-RecoDoneSNSTopicArn

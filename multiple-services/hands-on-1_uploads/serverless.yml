@@ -18,7 +18,7 @@ resources:
     S3BucketUploads:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: ${self:custom.stage}-upload-bucket-longname
+        BucketName: ${self:custom.stage}-uploads-bucket-longname
         # Set the CORS policy
         CorsConfiguration:
           CorsRules:
