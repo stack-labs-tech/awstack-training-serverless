@@ -25,6 +25,20 @@ Install serveless framework
 This application is made out of several services that depend on each other. You have to deploy the services in the right order to avoid errors related to theses dependencies.
 
 ```bash
+# deploy all services
+make deploy
+
+# deploy sinle service (e.g. #2)
+make deploy2
+
+# drop all
+make remove
+
+# remove single service (e.g. #2)
+make remove2
+```
+
+```bash
 # reference your own profile (perso-adminolive here as declared in ~/.aws/credentials)
 
 # Deploy first service
@@ -40,5 +54,3 @@ serverless deploy -v --aws-profile perso-adminolive
 ```
 
 ## Organization
-
-

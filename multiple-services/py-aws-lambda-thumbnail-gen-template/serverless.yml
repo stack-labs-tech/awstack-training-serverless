@@ -1,4 +1,4 @@
-service: py-aws-lambda-thumbnail-gen # NOTE: update this with your service name
+service: py-aws-lambda-thumbnail-gen
 
 custom:
   stage: ${opt:stage, self:provider.stage}
@@ -36,16 +36,11 @@ functions:
   py-aws-lambda-thumbnail-gen:
     handler: lambda_function.lambda_handler
     events:
-      # - sns: 
-      #     arn: ${self:custom.snsTopicArn}
-      #     topicName: ${self:custom.snsTopicName}
-
-
+    - sns: ${cf:py-aws-lambda-image-reco-dev.RecoDoneSNSTopicArn}
 
 #      - sns: ${cf:py-aws-lambda-image-reco-dev.RecoDoneSNSTopicArn}
 
 # arn:aws:sns:eu-west-1:814098365754:py-aws-lambda-image-reco-dev-serverless-reco-results
-         
     environment:
       imgSrcBucket: 
         'Fn::ImportValue': '${self:custom.stage}-UploadBucketName' 
@@ -57,7 +52,7 @@ functions:
         ${self:custom.snsTopicArn}
       snsTopicName_dummy:
         ${self:custom.snsTopicName}
-
+     
 resources:
   Resources:
     # Naming convention (S3Bucket<resource-name> seems important to be alloweed to configure event later)
